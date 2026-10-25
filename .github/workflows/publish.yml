@@ -18,7 +18,7 @@ jobs:
       # Publish
       - name: Publish to GitHub Package Registry
         id: publish_nuget
-        uses: rohith/publish-nuget@v2
+        uses: alirezanet/publish-nuget@v3.1.0
         with:
           PROJECT_FILE_PATH: OwnStream.PluginCore/OwnStream.PluginCore.csproj
           PACKAGE_NAME: OwnStream.PluginCore

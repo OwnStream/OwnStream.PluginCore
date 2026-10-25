@@ -21,7 +21,7 @@ jobs:
       # Publish
       - name: Publish to GitHub Package Registry
         id: publish_nuget
-        uses: Rebel028/publish-nuget@v2.8.0
+        uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: OwnStream.PluginCore/OwnStream.PluginCore.csproj
           PACKAGE_NAME: OwnStream.PluginCore
@@ -46,7 +46,7 @@ jobs:
           GITHUB_USER: kuylar
 
           # NuGet server uri hosting the packages, defaults to https://api.nuget.org
-          NUGET_SOURCE: https://nuget.pkg.github.com/OwnStream
+          NUGET_SOURCE: https://nuget.pkg.github.com
 
           # Flag to toggle pushing symbols along with nuget package to the server, disabled by default
           INCLUDE_SYMBOLS: true

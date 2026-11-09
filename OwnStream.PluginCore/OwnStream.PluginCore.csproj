@@ -17,4 +17,10 @@
         <PackageReference Include="Microsoft.ClearScript.V8.Native.osx-x64" Version="7.5.1"/>
         <PackageReference Include="Microsoft.ClearScript.V8.Native.win-arm64" Version="7.5.1"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\README.md">
+        <Link>README.md</Link>
+      </Content>
+    </ItemGroup>
 </Project>

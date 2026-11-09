@@ -5,14 +5,17 @@ using GlobExpressions;
 
 namespace OwnStream.PluginCore;
 
-public class PluginHost(PluginMeta meta)
+public class PluginHost
 {
+	internal PluginHost(PluginMeta meta) => this.meta = meta;
+	private PluginMeta meta;
+
 	private readonly HttpClient httpClient = new();
 
 	public async Task<object> Fetch(string url, string optionsStr)
 	{
 		bool allowed = meta.Permissions.Where(x => x.StartsWith("http"))
-			.Any(pattern => 
+			.Any(pattern =>
 				Glob.IsMatch(url, pattern));
 		if (!allowed)
 			throw new UnauthorizedAccessException($"Access to URL '{url}' is not granted.");
@@ -50,12 +53,20 @@ public class PluginHost(PluginMeta meta)
 		};
 	}
 
-	public void Log(string message)
+	public void Log(int level, string message) => LogMethod.Invoke(meta.Id, (LogLevel)level, message);
+
+	public static Action<string, LogLevel, string>
+		LogMethod = (pluginId, level, message) => Console.WriteLine($"[{pluginId}] [{level}] {message}");
+
+	public enum LogLevel
 	{
-		Console.WriteLine($"[JS] {message}");
+		Debug = 0,
+		Info = 1,
+		Warn = 2,
+		Error = 3
 	}
 
-	public const string Polyfill =
+	internal const string Polyfill =
 		"""
 		globalThis.fetch = async (resource, options) => {
 		        const url = typeof resource === "object" ? resource.url : resource;
@@ -69,7 +80,14 @@ public class PluginHost(PluginMeta meta)
 		                text: () => new Promise((res) => res(resp.data)),
 		        };
 		}
-		
-		globalThis.log = (message) => host.Log(message);
+
+		globalThis.log = (message) => host.Log(0, message);
+
+		globalThis.console = {
+			log: (message) => host.Log(0, message),
+			info: (message) => host.Log(1, message),
+			warn: (message) => host.Log(2, message),
+			error: (message) => host.Log(3, message),
+		}
 		""";
 }

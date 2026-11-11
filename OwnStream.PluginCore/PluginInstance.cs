@@ -10,7 +10,7 @@ namespace OwnStream.PluginCore;
 /// </summary>
 public class PluginInstance : IDisposable
 {
-	private PluginMeta Meta { get; }
+	public PluginMeta Meta { get; private set; }
 	private V8Runtime Runtime { get; }
 	private V8ScriptEngine Engine { get; }
 	private PluginHost PluginHost { get; }

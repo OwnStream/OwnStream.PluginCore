@@ -126,15 +126,11 @@ public class PluginInstance : IDisposable
 	private static JsonSerializerOptions options = new()
 	{
 		AllowDuplicateProperties = true,
-		DefaultIgnoreCondition = JsonIgnoreCondition.Always,
 		DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
-		NumberHandling = JsonNumberHandling.Strict,
-		PreferredObjectCreationHandling = JsonObjectCreationHandling.Replace,
-		PropertyNameCaseInsensitive = true,
 		PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-		ReadCommentHandling = JsonCommentHandling.Disallow,
 		UnknownTypeHandling = JsonUnknownTypeHandling.JsonElement,
 		UnmappedMemberHandling = JsonUnmappedMemberHandling.Skip,
+		WriteIndented = false,
 		IndentCharacter = '\t',
 		IndentSize = 1
 	};

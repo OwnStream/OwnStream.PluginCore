@@ -44,6 +44,7 @@ public class PluginMeta
 	/// Plugin permissions. Each entry can be one of:
 	/// <list type="bullet">
 	/// <item><term>a URL glob (e.g. <c>https://api.example.com/api/**</c>) - lets the plugin access the web via the fetch() call.</term></item>
+	/// <item><term>metadata.provide.{id} - provides metadata for a external provider ID (metadata.provide.tmdb, metadata.provide.tvdb, etc.)</term></item>
 	/// </list>
 	/// </summary>
 	[JsonPropertyName("permissions")]

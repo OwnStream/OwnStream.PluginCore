@@ -1,5 +1,6 @@
 using System.IO.Compression;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.V8;
 
@@ -109,8 +110,8 @@ public class PluginInstance : IDisposable
 		// Serialize and deserialize to strip V8 internals
 		// future kuylar here: i dont remember why i did this
 		// but honestly the comment is so scary that im leaving this as is
-		string json = JsonSerializer.Serialize(result);
-		return JsonSerializer.Deserialize<T>(json);
+		string json = JsonSerializer.Serialize(result, options);
+		return JsonSerializer.Deserialize<T>(json, options);
 	}
 
 	/// <summary>
@@ -121,6 +122,22 @@ public class PluginInstance : IDisposable
 	/// <exception cref="InvalidOperationException">An invalid feature path was requested.</exception>
 	public async Task<object?> InvokeFeature(string featurePath, params object[] args) =>
 		await InvokeFeature<object>(featurePath, args);
+
+	private static JsonSerializerOptions options = new()
+	{
+		AllowDuplicateProperties = true,
+		DefaultIgnoreCondition = JsonIgnoreCondition.Always,
+		DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+		NumberHandling = JsonNumberHandling.Strict,
+		PreferredObjectCreationHandling = JsonObjectCreationHandling.Replace,
+		PropertyNameCaseInsensitive = true,
+		PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+		ReadCommentHandling = JsonCommentHandling.Disallow,
+		UnknownTypeHandling = JsonUnknownTypeHandling.JsonElement,
+		UnmappedMemberHandling = JsonUnmappedMemberHandling.Skip,
+		IndentCharacter = '\t',
+		IndentSize = 1
+	};
 
 	public void Dispose()
 	{
